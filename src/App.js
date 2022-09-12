@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
+import { createRoot } from 'react-dom/client';
 import { Container, Nav } from "react-bootstrap";
 import { login, logout as destroy, accountBalance } from "./utils/near";
 import Wallet from "./components/Wallet";
@@ -7,6 +8,9 @@ import Products from "./components/marketplace/Products";
 import Cover from "./components/utils/Cover";
 import coverImg from "./assets/img/sandwich.jpg";
 import "./App.css";
+
+const container = document.getElementById('root');
+const root = createRoot(container);
 
 const App = function AppWrapper() {
   const account = window.walletConnection.account();
@@ -21,8 +25,9 @@ const App = function AppWrapper() {
     getBalance();
   }, [getBalance]);
 
-  return (
+  const application = (
     <>
+    <React.StrictMode>
       {<Notification />}
       {account.accountId ? (
         <Container fluid="md">
@@ -41,8 +46,11 @@ const App = function AppWrapper() {
       ) : (
         <Cover name="Street Food" login={login} coverImg={coverImg} />
       )}
+      </React.StrictMode>
     </>
   );
+
+  root.render(application);
 };
 
 export default App;
